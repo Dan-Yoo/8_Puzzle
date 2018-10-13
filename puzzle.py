@@ -13,10 +13,6 @@ class Puzzle:
         self.size_y = size_y
         self.current_state = state
 
-        if self.isSolvable(state) is False:
-            print("This board has no solutions")
-            return False
-
     def DFS(self):
         print("Running depth first search . . .")
         self.open.append(self.current_state)
@@ -29,13 +25,12 @@ class Puzzle:
             self.closed[key] = 1
 
             if self.isFinalState():
-                print("FOUND FINAL STATE!")
-                # self.generateSolution()
                 return True
 
             # else, push all its available next states into the open list
             self.pushNextStates()
 
+        print("Couldn't solve the puzzle")
         return False
 
     def BFS(self, heuristic):
@@ -52,8 +47,6 @@ class Puzzle:
 
             # check if final state
             if self.isFinalState():
-                print("FOUND FINAL STATE!")
-                # self.generateSolution()
                 return True
             else:
                 # push next states 
@@ -79,8 +72,6 @@ class Puzzle:
 
             # check if final state
             if self.isFinalState():
-                print("FOUND FINAL STATE!")
-                # self.generateSolution()
                 return True
             else:
                 # push next states 
@@ -149,7 +140,11 @@ class Puzzle:
             else:
                 return False
         
-        return True
+        if self.current_state[len(self.current_state) - 1] == 0:
+            print("Final state was found")
+            return True
+
+        return False
 
     def swap(self, i, j, state):
         temp = state[i]
@@ -157,6 +152,7 @@ class Puzzle:
         state[j] = temp
 
     def generateSolution(self, filename):
+        print("Generating the solution path . . .")
         base_char = 'a'
         stack = []
         file = open(filename + ".txt", "w")
@@ -175,10 +171,7 @@ class Puzzle:
             state = stack.pop()
             file.write(chr(ord(base_char) + state.index(0)) + " " + str(state) + "\n")
 
-
-    # TODO:: check if board is solvable
-    def isSolvable(self, state):
-        return True
+        print("Solution was generated in file : " + filename + ".txt")
 
     # hamming distance
     def heuristicA(self, state, depth=0):
