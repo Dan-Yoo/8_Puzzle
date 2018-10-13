@@ -63,7 +63,34 @@ class Puzzle:
 
         return False
 
-    def pushNextStates(self, heuristic=None):
+    def Astar(self, heuristic):
+        print("Running A* algorithm . . .")
+        heapq.heappush(self.open, (self.heuristicA(self.current_state, 0), (-1, self.current_state)))
+
+        while self.open:
+            # pop current state
+            temp = heapq.heappop(self.open)[1]
+            self.current_state = temp[1]
+            depth = temp[0] + 1
+            
+            # put into closed state
+            key = tuple(self.current_state)
+            self.closed[key] = 1
+
+            # check if final state
+            if self.isFinalState():
+                print("FOUND FINAL STATE!")
+                # self.generateSolution()
+                return True
+            else:
+                # push next states 
+                self.pushNextStates(heuristic, depth)
+            # repeat
+
+
+        return False
+
+    def pushNextStates(self, heuristic=None, depth=None):
         start_x = -1
         end_x = 1
         start_y = -1
@@ -100,8 +127,12 @@ class Puzzle:
                     # check if this state exists in closed
                     if tuple(new_state) not in self.closed:
                         # if heuristic is passed, you need to push a tuple of (h, state)
-                        if heuristic is not None:
+                        if heuristic is not None and depth is None:
                             heapq.heappush(self.open, (heuristic(new_state), new_state))
+                        # if heuristic and depth is passed, you need to push a tuplle of h, (depth, state)
+                        elif heuristic is not None and depth is not None:
+                            # heap push with new depth
+                            heapq.heappush(self.open, (heuristic(new_state, depth), (depth, new_state)))
                         else:
                             self.open.append(new_state)
                         
@@ -150,7 +181,7 @@ class Puzzle:
         return True
 
     # hamming distance
-    def heuristicA(self, state):
+    def heuristicA(self, state, depth=0):
         sum = 0
 
         for i in range(len(state)):
@@ -158,5 +189,8 @@ class Puzzle:
             if state[i] != 0:
                 if i != (state[i] - 1):
                     sum += 1
+                    
+        return sum + depth
 
-        return sum
+    def heuristicB(self, state, depth=0):
+        return 0

@@ -22,5 +22,6 @@ input = [0,6,11,7,3,2,10,8,1,5,4,9]
 puzzle = Puzzle(size_x, size_y, input)
 
 # BFS with heuristic A
-puzzle.BFS(puzzle.heuristicA)
-puzzle.generateSolution("BFS_A")
+# puzzle.BFS(puzzle.heuristicA)
+puzzle.Astar(puzzle.heuristicA)
+puzzle.generateSolution("A_star")
