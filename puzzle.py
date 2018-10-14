@@ -177,7 +177,7 @@ class Puzzle:
 
         while stack:
             state = stack.pop()
-            file.write(chr(ord(base_char) + state.index(0)) + " " + str(state) + "\n")
+            file.write(chr(ord(base_char) + list(state).index(0)) + " " + str(state) + "\n")
 
         print("Solution was generated in file : " + filename + ".txt")
 
