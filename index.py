@@ -30,7 +30,7 @@ if search > 2 or search < 0:
 # run DFS
 if search == 0:
     puzzle.DFS()
-    puzzle.generateSolution("DFS")
+    puzzle.generateSolution("puzzleDFS")
 
 # Pick heuristic
 print("Pick heuristic A or B")
@@ -40,16 +40,16 @@ heuristic_choice = input()
 if search == 1:
     if heuristic_choice == 'A':
         puzzle.BFS(puzzle.heuristicA)
-        puzzle.generateSolution("BFS_A")
+        puzzle.generateSolution("puzzleBFS-h1")
     else:
         puzzle.BFS(puzzle.heuristicB)
-        puzzle.generateSolution("BFS_B")
+        puzzle.generateSolution("puzzleBFS-h2")
 
 # run a* algorithm
 if search == 2:
     if heuristic_choice == 'A':
         puzzle.Astar(puzzle.heuristicA)
-        puzzle.generateSolution("Astar_A")
+        puzzle.generateSolution("puzzleAs-h1")
     else:
         puzzle.Astar(puzzle.heuristicB)
-        puzzle.generateSolution("Astar_B")
+        puzzle.generateSolution("puzzleAs-h2")
