@@ -1,6 +1,7 @@
 import heapq
 import time
 import math
+import copy
 
 class Puzzle:
     current_state = []
