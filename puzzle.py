@@ -116,7 +116,7 @@ class Puzzle:
             for y in range(start_y, end_y + 1):
                 if x != 0 or y != 0:
                     # create the new state with the move done
-                    new_state = self.current_state.copy()
+                    new_state = self.current_state.deepcopy()
                     swap_index = start_index + x + -y * self.size_x 
                     self.swap(start_index, swap_index, new_state)
 
