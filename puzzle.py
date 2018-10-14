@@ -1,4 +1,6 @@
 import heapq
+import time
+import math
 
 class Puzzle:
     current_state = []
@@ -7,11 +9,14 @@ class Puzzle:
     solution_path = {}
     size_x = 0
     size_y = 0
+    start_time = 0
+    end_time = 0
 
     def __init__(self, size_x, size_y, state):
         self.size_x = size_x
         self.size_y = size_y
         self.current_state = state
+        self.start_time = time.time()
 
     def DFS(self):
         print("Running depth first search . . .")
@@ -142,6 +147,7 @@ class Puzzle:
         
         if self.current_state[len(self.current_state) - 1] == 0:
             print("Final state was found")
+            self.end_time = time.time()
             return True
 
         return False
@@ -165,6 +171,8 @@ class Puzzle:
             key = tuple(self.solution_path[key])
             stack.append(key)
 
+        file.write("Program took " + str(round(self.end_time - self.start_time, 4)) + "seconds to find solution\n\n")
+
         file.write("0 " + str(stack.pop()) + "\n")
 
         while stack:
@@ -185,5 +193,21 @@ class Puzzle:
                     
         return sum + depth
 
+    # check how many moves it takes for each tile to reach their destination, excluding empty tile
     def heuristicB(self, state, depth=0):
-        return 0
+        sum = 0
+
+        for i in range(len(state)):
+            if state[i] != 0:
+                current_row = math.floor(i / self.size_x)
+                current_column = i % self.size_x 
+
+                final_row = math.floor((state[i] - 1) / self.size_x)
+                final_column = (state[i] - 1) % self.size_x
+
+                row_dif = abs(current_row - final_row)
+                column_dif = abs(current_column - final_column)
+
+                sum += max(row_dif, column_dif)
+
+        return sum + depth
